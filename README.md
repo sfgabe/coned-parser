@@ -1,3 +1,5 @@
+# NOTE: Fork from daniyalzade for python3 updates
+
 This is a parser library to scape Coned's account page to get account information. It can be used for creating IFTTT recipes that automatically add the current bill to a google drive or build an API to expose coned billing history.
 
 # Installing
