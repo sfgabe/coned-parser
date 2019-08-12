@@ -1,3 +1,5 @@
+## updated for python3 from https://github.com/daniyalzade/coned-parser
+
 from collections import OrderedDict
 import re
 from time import sleep
@@ -20,7 +22,6 @@ LOGIN_CONFIG = {
 }
 REGEX_DATE = r'(\d+/\d+/\d+)'
 REGEX_AMOUNT = r'\$(\d+.\d+)'
-
 
 def _get_account_page(username, password, debug=False):
     config = dict(LOGIN_CONFIG,
@@ -45,7 +46,7 @@ def _parse_bill_text(text):
 
 def _get_bills_page(driver):
     driver.find_element_by_xpath("//a[@id='ctl00_Main_hpLblBillingHistory']").click()
-    print 'sleeping to get the new page'
+    print ('sleeping to get the new page')
     sleep(10)
     return driver
 
@@ -90,10 +91,10 @@ def main():
     driver = _get_account_page(options.username, options.password,
                             debug=options.debug)
     html = driver.page_source.encode('utf8')
-    print _parse_current_bill(html)
+    print (_parse_current_bill(html))
     driver = _get_bills_page(driver)
     html = driver.page_source.encode('utf8')
-    print utils.print_bills_as_csv(_parse_bills(html))
+    print (utils.print_bills_as_csv(_parse_bills(html)))
 
 
 if __name__ == "__main__":
