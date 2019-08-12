@@ -1,10 +1,13 @@
+## Updated for Python3 from https://github.com/daniyalzade/coned-parser
+## Removed depreciated PhantamJS requirement, replaced with chromedriver
+
 import re
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
+from selenium.webdriver.chrome.options import Options
 
 def parse_price(price, fun=max):
     """
@@ -26,8 +29,13 @@ def parse_price(price, fun=max):
 
 
 def get_account_page_driver(login_config):
-    driver = webdriver.PhantomJS()
-    driver.set_window_size(1024, 768)
+
+    chrome_options = Options()
+    chrome_options.add_argument("headless")
+    chrome_options.add_argument("window-size=1024,768")
+
+    driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+
     driver.get(login_config['url'])
     element = driver.find_element_by_xpath(login_config['username_xpath'])
     element.send_keys(login_config['username'])
@@ -37,7 +45,7 @@ def get_account_page_driver(login_config):
 
     dom_xpath = login_config.get('dom_xpath')
     if dom_xpath:
-        print 'waiting for the appearence of the required element'
+        print ('waiting for the appearence of the required element')
         element = WebDriverWait(driver, 50).until(
             EC.presence_of_element_located((By.XPATH, dom_xpath))
         )
@@ -54,4 +62,4 @@ def get_account_page_driver(login_config):
 
 def print_bills_as_csv(bills):
     for bill in bills:
-        print ', '.join(map(str, bill.values()))
+        print (', '.join(map(str, bill.values())))
